@@ -4,7 +4,7 @@ import { Todo } from '../Todo/Todo';
 import './TodoItem.css';
 
 interface Props extends Todo {
-  index: number;
+  index: Accessor<number>;
   handleDoneChange: (idx: Accessor<number>) => void;
 }
 

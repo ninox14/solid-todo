@@ -1,5 +1,5 @@
 import { Accessor, Component, createSignal, For } from 'solid-js';
-
+import { createStore } from 'solid-js/store';
 import TodoItem from '../TodoItem/TodoItem';
 
 export interface Todo {
@@ -12,7 +12,7 @@ interface Store {
 }
 
 const Todo: Component = () => {
-  const [state, setState] = createSignal<Store>({ todos: [] });
+  const [state, setState] = createStore<Store>({ todos: [] });
   const [task, setTask] = createSignal('');
   const handleTaskCahnge = (
     e: Event & {
@@ -24,13 +24,13 @@ const Todo: Component = () => {
   };
 
   const handleAddTodo = () => {
-    // setState((state) => ({
-    //   todos: [...state.todos, { task: task(), done: false }],
-    // }));
+    setState((state) => ({
+      todos: [...state.todos, { task: task(), done: false }],
+    }));
   };
 
   const handleDoneChange = (indx: Accessor<number>) => {
-    setState('todos', indx(), { done:  });
+    setState('todos', indx(), { done: !state.todos[indx()].done });
   };
   return (
     <>
@@ -39,7 +39,7 @@ const Todo: Component = () => {
         <button onClick={handleAddTodo}>add</button>
       </form>
       <div>
-        <For each={state().todos}>
+        <For each={state.todos}>
           {(item, indx) => (
             <TodoItem
               {...item}
